@@ -1,14 +1,16 @@
 import React from 'react'
 import Logo from '../Logo'
 import Container from '../Container'
-import { NavLink } from 'react-router'
+import { Link, NavLink } from 'react-router'
 
 export default function Navbar() {
 
   const links=<>
-  <li><NavLink to="">Services</NavLink></li>
-  <li><NavLink to="">Services</NavLink></li>
-  <li><NavLink to="">Services</NavLink></li>
+  <li><NavLink className="text-lg font-medium " to="">Coverage</NavLink></li>
+  <li><NavLink className="text-lg font-medium " to="">About Us</NavLink></li>
+  <li><NavLink className="text-lg font-medium " to="">Pricing</NavLink></li>
+  <li><NavLink className="text-lg font-medium " to="">Blog</NavLink></li>
+  <li><NavLink className="text-lg font-medium " to="">Contact</NavLink></li>
  
   </>
 
@@ -34,8 +36,17 @@ export default function Navbar() {
      {links}
     </ul>
   </div>
-  <div className="navbar-end">
-    <a className="btn">Button</a>
+  <div className="navbar-end flex items-center justify-end gap-5">
+  <Link>
+  <button className='text-lg font-semibold border-2 border-gray-300 rounded-xl px-5 py-2'>
+    Sign In
+  </button>
+  </Link>
+  <Link>
+  <button className='text-lg font-semibold bg-primary border-2 border-primary  rounded-xl px-5 py-2'>
+    Sign Up
+  </button>
+  </Link>
   </div>
 </div> 
 </Container> )
