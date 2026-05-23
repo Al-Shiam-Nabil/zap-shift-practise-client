@@ -8,6 +8,11 @@ export default function Navbar() {
     <>
       <li>
         <NavLink className="text-lg font-medium " to="">
+        Services
+        </NavLink>
+      </li>
+      <li>
+        <NavLink className="text-lg font-medium " to="/coverage">
           Coverage
         </NavLink>
       </li>

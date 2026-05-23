@@ -9,6 +9,9 @@ export default function HeroBanner() {
                 <div>
                     <Banner/>
                 </div>
+                <div>
+                    <Banner/>
+                </div>
               
             </Carousel>
   )
