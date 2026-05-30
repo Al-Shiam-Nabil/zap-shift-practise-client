@@ -5,7 +5,6 @@ export default function CoverageMap({ coverageArea }) {
   const [mapData, setMapData] = useState(null);
 
   const mapFunc = (mapInfo) => {
-    console.log(mapInfo);
     setMapData(mapInfo);
   };
 
