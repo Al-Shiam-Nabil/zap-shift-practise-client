@@ -2,13 +2,18 @@ import React from "react";
 import Logo from "../Logo";
 import Container from "../Container";
 import { Link, NavLink } from "react-router";
+import useAuth from "../../../Hooks/useAuth";
+import { toast } from "react-toastify";
+import AuthLoginLoading from "../Loading/AuthLoginLoading";
 
 export default function Navbar() {
+  const { user, signOutUser, loading } = useAuth();
+
   const links = (
     <>
       <li>
         <NavLink className="text-lg font-medium " to="">
-        Services
+          Services
         </NavLink>
       </li>
       <li>
@@ -76,16 +81,38 @@ export default function Navbar() {
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
         <div className="navbar-end flex items-center justify-end gap-5">
-          <Link>
-            <button className="text-lg font-semibold border-2 border-gray-300 rounded-xl px-5 py-2">
-              Sign In
-            </button>
-          </Link>
-          <Link>
-            <button className="text-lg font-semibold bg-primary border-2 border-primary  rounded-xl px-5 py-2">
-              Sign Up
-            </button>
-          </Link>
+          {user ? (
+            loading ? (
+              <AuthLoginLoading />
+            ) : (
+              <button
+                type="button"
+                onClick={() =>
+                  signOutUser()
+                    .then(() => toast.success("Log out successfully."))
+                    .catch(() => toast.error("Something went wrong."))
+                }
+                className="text-lg font-semibold border-2 border-gray-300 rounded-xl px-5 py-2"
+              >
+                Log Out
+              </button>
+            )
+          ) : loading ? (
+            <AuthLoginLoading />
+          ) : (
+            <>
+              <Link to="login">
+                <button className="text-lg font-semibold border-2 border-gray-300 rounded-xl px-5 py-2">
+                  Sign In
+                </button>
+              </Link>
+              <Link to="/registration">
+                <button className="text-lg font-semibold bg-primary border-2 border-primary  rounded-xl px-5 py-2">
+                  Sign Up
+                </button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </Container>
