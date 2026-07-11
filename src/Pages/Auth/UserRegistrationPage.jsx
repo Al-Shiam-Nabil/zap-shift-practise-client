@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../Hooks/useAuth";
 import axios from "axios";
 import { updateProfile } from "firebase/auth";
 import GoogleLogin from "../../Components/Auth/GoogleLogin";
 
 export default function UserRegistrationPage() {
-  const { createUser, googleSignin, setLoading, user } = useAuth();
+  const { createUser, googleSignin, profileUpdate, setLoading, user } =
+    useAuth();
   const {
     register,
     handleSubmit,
@@ -16,47 +17,59 @@ export default function UserRegistrationPage() {
   } = useForm();
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log(location);
 
   const [showPassword, setshowPassword] = useState(false);
-  const [photoURL, setPhotoURL] = useState(null);
 
   const imageBbApiKey = import.meta.env.VITE_IMAGEBB_API_KEY;
 
-  if (user) {
-    navigate("/");
-  }
-
-  const handleLogin = (data) => {
+  const handleLogin = async (data) => {
     const displayName = data.name;
     const email = data.email;
     const password = data.password;
     const imageFile = data.image[0];
 
-    createUser(email, password)
-      .then((result) => {
-        const loggedUser = result.user;
+    try {
+      await createUser(email, password);
 
-        const formData = new FormData();
-        formData.append("image", imageFile);
+      const formData = new FormData();
+      formData.append("image", imageFile);
 
-        // 1. age image upload kore URL nite hobe
-        return axios
-          .post(`https://api.imgbb.com/1/upload?key=${imageBbApiKey}`, formData)
-          .then((response) => {
-            const uploadedUrl = response.data.data.display_url;
-            setPhotoURL(uploadedUrl);
+      const response = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${imageBbApiKey}`,
+        formData,
+      );
+      const uploadedUrl = response.data.data.display_url;
+      const profile = { displayName, photoURL: uploadedUrl };
 
-            // 2. tarpor fresh user + fresh url diye updateProfile
-            return updateProfile(loggedUser, {
-              displayName,
-              photoURL: uploadedUrl,
-            });
-          })
-          .then(() => {
-            console.log("updated");
-          });
-      })
-      .catch((error) => console.log(error));
+      await profileUpdate(profile);
+
+      navigate(location?.state || "/");
+    } catch (error) {
+      console.log(error);
+    }
+
+    // createUser(email, password)
+    //   .then(() => {
+    //     const formData = new FormData();
+    //     formData.append("image", imageFile);
+
+    //     return axios
+    //       .post(`https://api.imgbb.com/1/upload?key=${imageBbApiKey}`, formData)
+    //       .then((response) => {
+    //         const uploadedUrl = response.data.data.display_url;
+
+    //         const profile = { displayName, photoURL: uploadedUrl };
+
+    //         return profileUpdate(profile);
+    //       })
+    //       .then(() => {
+    //         console.log("updated");
+    //       });
+    //   })
+    //   .catch((error) => console.log(error));
   };
 
   console.log(user);
@@ -160,6 +173,7 @@ export default function UserRegistrationPage() {
           <p className="text-center">
             Already have an account? Please{" "}
             <Link
+              state={location.state}
               to="/login"
               className="text-blue-600 hover:text-blue-700 hover:underline"
             >

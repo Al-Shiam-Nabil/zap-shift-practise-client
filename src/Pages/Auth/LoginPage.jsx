@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
 import useAuth from "../../Hooks/useAuth";
 import GoogleLogin from "../../Components/Auth/GoogleLogin";
@@ -17,6 +17,9 @@ export default function LoginPage() {
 
   const { signinUser } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log(location);
 
   const [showPassword, setshowPassword] = useState(false);
 
@@ -26,7 +29,7 @@ export default function LoginPage() {
         console.log(result.user);
         toast.success("Logged in successfully.");
         reset();
-        navigate("/");
+        navigate(location?.state || "/");
       })
       .catch((error) => {
         console.log(error);
@@ -99,6 +102,7 @@ export default function LoginPage() {
         <p className="text-center">
           Don't have an account? Please{" "}
           <Link
+            state={location.state}
             to="/registration"
             className="text-blue-600 hover:text-blue-700 hover:underline"
           >

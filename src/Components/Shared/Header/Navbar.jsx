@@ -41,6 +41,11 @@ export default function Navbar() {
           Contact
         </NavLink>
       </li>
+      <li>
+        <NavLink className="text-lg font-medium " to="/rider">
+          Be a rider
+        </NavLink>
+      </li>
     </>
   );
 
