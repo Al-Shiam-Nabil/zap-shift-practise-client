@@ -42,6 +42,11 @@ export default function Navbar() {
         </NavLink>
       </li>
       <li>
+        <NavLink className="text-lg font-medium " to="/send-parcel">
+          Send Parcel
+        </NavLink>
+      </li>
+      <li>
         <NavLink className="text-lg font-medium " to="/rider">
           Be a rider
         </NavLink>
