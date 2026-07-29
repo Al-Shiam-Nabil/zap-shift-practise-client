@@ -7,7 +7,6 @@ export default function PrivateRoute({ children }) {
   const { loading, user } = useAuth();
   const location = useLocation();
 
-  console.log(location);
   if (loading) {
     return <LoadingSpinner />;
   }

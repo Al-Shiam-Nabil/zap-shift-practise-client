@@ -51,6 +51,14 @@ export default function Navbar() {
           Be a rider
         </NavLink>
       </li>
+
+      {user && (
+        <li>
+          <NavLink className="text-lg font-medium " to="/dashboard/my-parcels">
+            My Parcels
+          </NavLink>
+        </li>
+      )}
     </>
   );
 
