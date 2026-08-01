@@ -10,6 +10,7 @@ import RiderPage from "../Pages/Rider/RiderPage";
 import SendParcelPage from "../Pages/SendParcel/SendParcelPage";
 import DashboardLayout from "../Layouts/DashboardLayout";
 import MyParcelsPage from "../Pages/Dashboard/MyParcelsPage";
+import PaymentPage from "../Pages/Dashboard/PaymentPage";
 
 export const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
       {
         path: "my-parcels",
         Component: MyParcelsPage,
+      },
+      {
+        path: "payment/:parcelId",
+        Component: PaymentPage,
       },
     ],
   },
