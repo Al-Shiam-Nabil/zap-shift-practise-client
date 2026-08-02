@@ -20,13 +20,26 @@ export default function PaymentPage() {
     return <LoadingSpinner />;
   }
 
-  console.log(parcel);
+  const handleCheckout = async () => {
+    try {
+      const res = await secureAxios.post(`/create-checkout-session`, parcel);
 
-  console.log(parcelId);
+      if (res.data?.url) {
+        window.location.href = res.data.url;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
-      <p>please pay for {parcel.parcelName}</p>
-      <button className="btn btn-primary text-black">Pay</button>
+      <p>
+        please pay {parcel.price} TK for {parcel.parcelName}
+      </p>
+      <button onClick={handleCheckout} className="btn btn-primary text-black">
+        Pay
+      </button>
     </div>
   );
 }
